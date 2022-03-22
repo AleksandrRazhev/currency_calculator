@@ -1,1 +1,1 @@
-# currency_calculator
+# React training project with public API and react hooks
