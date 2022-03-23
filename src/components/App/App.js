@@ -5,8 +5,7 @@ import './app.scss';
 const App = () => {
 
   const [valute, setValute] = useState('USD');
-  const [money, setMoney] = useState(139.98);
-  const [number, setNumber] = useState(money);
+  const [number, setNumber] = useState(101);
   const [arrValute] = useState(['usd', 'eur', 'gbp', 'cny', 'jpy', 'czk', 'sek', 'tjs']);
   const [arrObjValute, setArrObjValute] = useState();
 
@@ -35,29 +34,22 @@ const App = () => {
       });
   }, [arrValute]);
 
-  function calcNumber(valute) {
-    valute = valute.toString().toUpperCase();
-    arrObjValute.forEach(item => {
-      if (valute === item.valute) {
-        const usd = arrObjValute.filter(item => item.valute === 'USD')[0].rate;
-        setNumber(number => (money * usd / item.rate * item.nominal).toFixed(2));
-        setValute(valute => item.valute);
-      }
-    })
+  function calcNumber(nextValute) {
+    nextValute = nextValute.toString().toUpperCase();
+    const current = arrObjValute.filter(item => item.valute === valute)[0];
+    const next = arrObjValute.filter(item => item.valute === nextValute)[0];
+    const nextNumber = ((current.rate / current.nominal) / (next.rate / next.nominal)) * number;
+    setValute(valute => nextValute);
+    setNumber(number => nextNumber.toFixed(2));
   }
 
   function getValue(e) {
-    const rate = arrObjValute.filter(item => valute === item.valute)[0].rate;
-    const nominal = arrObjValute.filter(item => valute === item.valute)[0].nominal;
-    const usdRate = arrObjValute.filter(item => 'USD' === item.valute)[0].rate;;
-    const calculated = rate * e.target.value / usdRate / nominal;
-
-    setMoney(money => money = calculated)
+    setNumber(number => number = e.target.value)
+    console.log('getValue');
   }
 
   return (
     <div className="app">
-      <div className="counter">{number}</div>
       <form
         className="counter"
         onSubmit={(e) => e.preventDefault()}
@@ -67,7 +59,8 @@ const App = () => {
             autoFocus
             type="number"
             placeholder='enter number'
-            onBlur={(event) => getValue(event)}
+            onChange={getValue}
+            value={number}
           />
         </label>
       </form>
