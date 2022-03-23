@@ -8,18 +8,34 @@
 }
 
 .counter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   height: 100px;
+  margin: 0 auto 40px;
+  padding: 1em;
   border-radius: 5px;
   box-shadow: 5px 5px 10px rgba(0, 0, 0, .2);
   background-color: #e6e6e6;
   text-align: center;
   line-height: 100px;
-  font-size: 34px;
-  margin: 0 auto;
+  font-size: 30px;
+
+  label {
+    max-width: 100%;
+
+    input {
+      max-width: 100%;
+      font-size: 1em;
+      text-align: center;
+      background-color: transparent;
+      border: none;
+    }
+  }
+
 }
 
 .controls {
-  padding-top: 40px;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-gap: 10px;
